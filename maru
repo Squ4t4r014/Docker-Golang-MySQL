@@ -1,0 +1,37 @@
+#!/bin/bash
+
+if [ "$1" == "clean" ];then
+    ./maru stop
+    docker rm -f -v $(docker ps -aq -f status=exited)
+    docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v /etc:/etc spotify/docker-gc
+    docker volume rm godev_db-data
+    docker rmi -f $(docker images -aq)
+    yes | docker system prune
+elif [ "$1" == "stop" ];then
+    docker ps -q | xargs docker stop | xargs docker rm
+elif [ "$1" == "start" ];then
+    docker-compose up -d &
+elif [ "$1" == "restart" ];then
+    ./maru stop && ./maru start
+elif [ "$1" == "build" ];then
+    docker-compose up -d --build
+elif [ "$1" == "version" ];then
+    echo "maru Varsion:304.870.01"
+    echo "see https://github.com/DaisenKudo/Docker-Golang-MySQL"
+    echo "Copyright: Daisen Kudo 2019"
+elif [ "$1" == "zura" ];then
+    echo "Zura"
+    if [ "$2" == "-v" ];then
+        echo "More Zura : http://www.lovelive-anime.jp/uranohoshi"
+    elif [ "$2" == "-vv" ];then
+        echo "ﾉcﾉ,,・o・,,ﾉﾚ < Zura..."
+        echo "More Zura : http://www.lovelive-anime.jp/uranohoshi"
+    elif [ "$2" == "-vvv" ];then
+        more '.zura' | xargs -IXX echo XX
+        echo "More Zura : https://aahub.org/mlt/9c12df899f03cf3c026c7d92172d9a29"
+        echo "More Zura : http://www.lovelive-anime.jp/uranohoshi"
+    fi
+else
+    echo "Usage:"
+    more ./README.md | awk '9<=NR && NR<=14'
+fi

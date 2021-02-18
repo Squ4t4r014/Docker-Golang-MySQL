@@ -1,0 +1,16 @@
+#!/bin/bash
+
+echo "[golang-init]waiting for mysqld..."
+
+until mysqladmin ping -h mysql --silent; do
+    sleep 1
+done
+
+echo "[golang-init]done..."
+
+go get github.com/go-sql-driver/mysql \
+  && go get github.com/google/uuid \
+  && go get github.com/gorilla/mux
+
+cd /go/src/work
+exec go run main.go
