@@ -29,12 +29,8 @@ services:
     tty: true
     volumes:
       - "./golang/src:/go/src"
-<<<<<<< HEAD
       - "./docker/golang/init:/golang-init"
     command: bash /golang-init
-=======
-    command: go run main.go
->>>>>>> 054c23d... [fix]Windows環境で動作していないことを修正
 volumes:
   db-data:
     driver: local
